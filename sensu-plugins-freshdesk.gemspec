@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
   s.version                = SensuPluginsFreshdesk::Version::VER_STRING
 
   s.add_runtime_dependency 'sensu-plugin', '1.2.0'
-  s.add_runtime_dependency 'freshdesk-api',  '0.3.4'
+  s.add_runtime_dependency 'freshdesk'
 
   s.add_development_dependency 'codeclimate-test-reporter', '~> 0.4'
   s.add_development_dependency 'rubocop',                   '0.32.1'
