@@ -1,32 +1,34 @@
 #!/usr/bin/env ruby
 #
-# Sensu Zendesk Handler
+# Sensu Freshdesk Handler
 #
 # DESCRIPTION:
-#  Handler to automatic create new tickets in Zendesk for alarms.
+#  Handler to automatic create new tickets in Freshdesk for alarms.
 #
 #  subscriptions_to_tags - transforms your subscriptions in tags
 #  status_to_use - determine if Critical (2), Warning (1) or Unknown (3) alerts will create tickets
 #
 # OUTPUT:
-#   Create a new Zendesk ticket
+#   Create a new Freshdesk ticket
 #
 # PLATFORMS:
 #   all
 #
 # DEPENDENCIES:
-#  gem zendesk_api
+#  gem freshdesk-api
 #
-# 2014, Diogo Gomes <diogo.gomes@ideais.com.br> @_diogo
+# 2015, Jürgen Coetsiers <jurgen.coetsiers@marlin-ops.com> @jcoetsie
 #
 # Released under the same terms as Sensu (the MIT license); see LICENSE
 # for details.
 #
 
 require 'sensu-handler'
-require 'zendesk_api'
+require 'freshdesk-api'
 
-class Zendesk < Sensu::Handler
+class Freshdesk < Sensu::Handler
+  
+  
   def ticket_description
     "Sensu Alert\r\n" \
         'Client: ' + @event['client']['name'] + "\r\n" \
@@ -38,10 +40,10 @@ class Zendesk < Sensu::Handler
 
   def ticket_tags
     tags = []
-    unless settings['zendesk']['tags'].nil?
-      tags << settings['zendesk']['tags']
+    unless settings['freshdesk']['tags'].nil?
+      tags << settings['freshdesk']['tags']
     end
-    if settings['zendesk']['subscriptions_to_tags']
+    if settings['freshdesk']['subscriptions_to_tags']
       tags << @event['client']['subscriptions']
     end
     tags
@@ -52,37 +54,21 @@ class Zendesk < Sensu::Handler
   end
 
   def handle
-    client = ZendeskAPI::Client.new do |config|
-      config.url = settings['zendesk']['url']
-
-      # Basic / Token Authentication
-      config.username = settings['zendesk']['username']
-
-      # Choose one of the following depending on your authentication choice
-      if settings['zendesk']['token'].nil?
-        config.password = settings['zendesk']['password']
-      else
-        config.token = settings['zendesk']['token']
-      end
-      config.retry = true
-    end
-
+    client = Freshdesk.new(settings['freshdesk']['url'], settings['freshdesk']['username'], settings['freshdesk']['password'])  
+    
     begin
       timeout(60) do
-        if settings['zendesk']['status_to_use'].include?(@event['check']['status'])
-          ZendeskAPI::Ticket.create(
-            client,
+        if settings['freshdesk']['status_to_use'].include?(@event['check']['status'])
+          client.post_ticket(
             subject: ticket_subject,
-            comment: { value: ticket_description },
-            submitter_id: client.current_user.id,
-            priority: settings['zendesk']['priority'] || 'urgent',
-            type: settings['zendesk']['type'] || 'incident',
-            tags: ticket_tags
+            description: ticket_description,
+            email: settings['freshdesk']['username'],
+            priority: settings['freshdesk']['priority'] || 1
           )
         end
       end
   rescue Timeout::Error
-    puts 'zendesk -- timed out while attempting to create a ticket for #{ticket_subject} --'
+    puts 'freshdesk -- timed out while attempting to create a ticket for #{ticket_subject} --'
     end
   end
 end

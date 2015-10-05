@@ -4,9 +4,9 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'date'
 
 if RUBY_VERSION < '2.0.0'
-  require 'sensu-plugins-zendesk'
+  require 'sensu-plugins-freshdesk'
 else
-  require_relative 'lib/sensu-plugins-zendesk'
+  require_relative 'lib/sensu-plugins-freshdesk'
 end
 
 pvt_key = '~/.ssh/gem-private_key.pem'
@@ -15,28 +15,28 @@ Gem::Specification.new do |s|
   s.authors                = ['Sensu Plugins and contributors']
   s.cert_chain             = ['certs/sensu-plugins.pem']
   s.date                   = Date.today.to_s
-  s.description            = 'Sensu plugins for zendesk'
+  s.description            = 'Sensu plugins for freshdesk'
   s.email                  = '<sensu-users@googlegroups.com>'
   s.executables            = Dir.glob('bin/**/*').map { |file| File.basename(file) }
   s.files                  = Dir.glob('{bin,lib}/**/*') + %w(LICENSE README.md CHANGELOG.md)
-  s.homepage               = 'https://github.com/sensu-plugins/sensu-plugins-zendesk'
+  s.homepage               = 'https://github.com/sensu-plugins/sensu-plugins-freshdesk'
   s.license                = 'MIT'
   s.metadata               = { 'maintainer'         => '',
                                'development_status' => 'active',
                                'production_status'  => 'unstable - testing recommended'
   }
-  s.name                   = 'sensu-plugins-zendesk'
+  s.name                   = 'sensu-plugins-freshdesk'
   s.platform               = Gem::Platform::RUBY
   s.post_install_message   = 'You can use the embedded Ruby by setting EMBEDDED_RUBY=true in /etc/default/sensu'
   s.require_paths          = ['lib']
   s.required_ruby_version  = '>= 1.9.3'
   s.signing_key            = File.expand_path(pvt_key) if $PROGRAM_NAME =~ /gem\z/
-  s.summary                = 'Sensu plugins for zendesk'
+  s.summary                = 'Sensu plugins for freshdesk'
   s.test_files             = s.files.grep(%r{^(test|spec|features)/})
-  s.version                = SensuPluginsZendesk::Version::VER_STRING
+  s.version                = SensuPluginsFreshdesk::Version::VER_STRING
 
   s.add_runtime_dependency 'sensu-plugin', '1.2.0'
-  s.add_runtime_dependency 'zendesk-api',  '0.3.4'
+  s.add_runtime_dependency 'freshdesk-api',  '0.3.4'
 
   s.add_development_dependency 'codeclimate-test-reporter', '~> 0.4'
   s.add_development_dependency 'rubocop',                   '0.32.1'

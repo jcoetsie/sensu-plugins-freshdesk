@@ -1,1 +1,1 @@
-require 'sensu-plugins-zendesk/version'
+require 'sensu-plugins-freshdesk/version'
