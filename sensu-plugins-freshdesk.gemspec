@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.email                  = '<sensu-users@googlegroups.com>'
   s.executables            = Dir.glob('bin/**/*').map { |file| File.basename(file) }
   s.files                  = Dir.glob('{bin,lib}/**/*') + %w(LICENSE README.md CHANGELOG.md)
-  s.homepage               = 'https://github.com/sensu-plugins/sensu-plugins-freshdesk'
+  s.homepage               = 'https://github.com/jcoetsie/sensu-plugins-freshdesk'
   s.license                = 'MIT'
   s.metadata               = { 'maintainer'         => '',
                                'development_status' => 'active',

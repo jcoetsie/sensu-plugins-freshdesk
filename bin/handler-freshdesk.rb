@@ -17,7 +17,7 @@
 # DEPENDENCIES:
 #  gem freshdesk-api
 #
-# 2015, Jürgen Coetsiers <jurgen.coetsiers@marlin-ops.com> @jcoetsie
+# 2015, Jurgen Coetsiers <jurgen.coetsiers@marlin-ops.com> @jcoetsie
 #
 # Released under the same terms as Sensu (the MIT license); see LICENSE
 # for details.
@@ -27,8 +27,7 @@ require 'sensu-handler'
 require 'freshdesk-api'
 
 class Freshdesk < Sensu::Handler
-  
-  
+
   def ticket_description
     "Sensu Alert\r\n" \
         'Client: ' + @event['client']['name'] + "\r\n" \
@@ -55,7 +54,7 @@ class Freshdesk < Sensu::Handler
 
   def handle
     client = Freshdesk.new(settings['freshdesk']['url'], settings['freshdesk']['username'], settings['freshdesk']['password'])  
-    
+
     begin
       timeout(60) do
         if settings['freshdesk']['status_to_use'].include?(@event['check']['status'])
