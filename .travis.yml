@@ -11,7 +11,7 @@ rvm:
 notifications:
   email:
     recipients:
-      - sensu-plugin@sensu-plugins.io
+      - jcoetsie@gmail.com
     on_success: change
     on_failure: always
 
