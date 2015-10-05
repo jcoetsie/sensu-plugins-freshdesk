@@ -27,7 +27,6 @@ require 'sensu-handler'
 require 'freshdesk-api'
 
 class Freshdesk < Sensu::Handler
-
   def ticket_description
     "Sensu Alert\r\n" \
         'Client: ' + @event['client']['name'] + "\r\n" \
@@ -53,8 +52,7 @@ class Freshdesk < Sensu::Handler
   end
 
   def handle
-    client = Freshdesk.new(settings['freshdesk']['url'], settings['freshdesk']['username'], settings['freshdesk']['password'])  
-
+    client = Freshdesk.new(settings['freshdesk']['url'], settings['freshdesk']['username'], settings['freshdesk']['password'])
     begin
       timeout(60) do
         if settings['freshdesk']['status_to_use'].include?(@event['check']['status'])
